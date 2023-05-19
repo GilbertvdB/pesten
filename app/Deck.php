@@ -146,5 +146,3 @@ class Deck
         return $this->results;
     }
 }
-
-?>
