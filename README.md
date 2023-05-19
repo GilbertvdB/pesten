@@ -24,13 +24,11 @@ Here are the rules:
 <a href="https://github.com/GilbertvdB/pesten/blob/master/app/Deck.php">The class file can be found here</a>
 
 
-The controller here:
-<br>
-https://github.com/GilbertvdB/pesten/blob/master/app/Http/Controllers/CardController.php
+<a href="https://github.com/GilbertvdB/pesten/blob/master/app/Http/Controllers/CardController.php">The controller can be found here</a>
 
-The view here:
-<br>
-https://github.com/GilbertvdB/pesten/blob/master/resources/views/welcome.blade.php
+
+<a href="https://github.com/GilbertvdB/pesten/blob/master/resources/views/welcome.blade.php">The view can be found here</a>
+
 
 ## Previews
 
