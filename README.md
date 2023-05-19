@@ -20,6 +20,19 @@ Here are the rules:
 - A player wins the game when his hands has no cards left.
 - If all players can no longer play a card or draw the game ends in a draw.
 
+## Files
+The class file can be found here:
+<br>
+https://github.com/GilbertvdB/pesten/blob/master/app/Deck.php
+
+The controller here:
+<br>
+https://github.com/GilbertvdB/pesten/blob/master/app/Http/Controllers/CardController.php
+
+The view here:
+<br>
+https://github.com/GilbertvdB/pesten/blob/master/resources/views/welcome.blade.php
+
 ## Previews
 
 Win!
