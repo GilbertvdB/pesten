@@ -76,11 +76,11 @@ class Deck
         return '[' . date('H:i:s') . '] - ';
     }
 
-    private function topCards()
+    public function topCards($restDeck)
     {
-        $restDeck = $this->getRemainingCards();
         $topCard = array_shift($restDeck);
         $this->results[] = $this->baseMessage() . 'Top card is: ' . $topCard;
+        return $topCard;
     }
 
 
