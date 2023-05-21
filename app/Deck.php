@@ -130,8 +130,8 @@ class Deck
                     }
                 } else {
                     if (count($restDeck) === 0) {
-                        $this->results[] = $this->baseMessage() . 'hand: ' . count($playersHand[$player]) . ' - ' . 'deck: ' . count($restDeck) . ' - ' . 'skip: ' . $skipCounter . ' - '. $player . ' cannot draw, skips turn';
                         $skipCounter++;
+                        $this->results[] = $this->baseMessage() . 'hand: ' . count($playersHand[$player]) . ' - ' . 'deck: ' . count($restDeck) . ' - ' . 'skip: ' . $skipCounter . ' - '. $player . ' cannot draw, skips turn';
                         continue;
                     }
                     
