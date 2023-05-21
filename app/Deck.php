@@ -33,17 +33,16 @@ class Deck
         return $players;
     }
 
-    public function dealPlayerCards()
+    public function dealPlayerCards() 
     {
-        $deck = $this->cards;
         
         $players = $this->setPlayers();
         $playerHands = array_fill_keys($players, []);
 
         for ($i = 0; $i < 7; $i++) {
             foreach ($players as $player) {
-                $randomIndex = array_rand($deck);
-                $card = array_splice($deck, $randomIndex, 1)[0];
+                $randomIndex = array_rand($this->cards);
+                $card = array_splice($this->cards, $randomIndex, 1)[0];
                 array_push($playerHands[$player], $card);
             }
         }
@@ -59,7 +58,7 @@ class Deck
     public function displayPlayerHands($playerHands)
     {
         foreach ($playerHands as $player => $hand) {
-            $this->results[] = '[' . date('H:i:s') . '] - ' . $player . ' has been dealt: ' . implode(', ', $hand);
+            $this->results[] = '[' . date('H:i:s') . ']' . ' - ' . $player . ' has been dealt: ' . implode(', ', $hand);
         }
     }
 
@@ -73,73 +72,86 @@ class Deck
         return ($suit1 === $suit2) || ($value1 === $value2);
     }
 
+    private function baseMessage()
+    {
+        return '[' . date('H:i:s') . '] - ';
+    }
+
+    private function topCards()
+    {
+        
+        $restDeck = $this->getRemainingCards();
+        $topCard = array_shift($restDeck);
+        $this->results[] = $this->baseMessage() . 'Top card is: ' . $topCard;
+    }
+
+
     public function startGame() 
-{
-    $deck = new Deck();
-    $deck->shuffle();
-    
-    $playersHand = $deck->dealPlayerCards();
-    $this->results[] = '[' . date('H:i:s') . '] - ' . 'Starting game with ' . implode(', ', $this->setPlayers());
-    $this->displayPlayerHands($playersHand);
+    {
+        $deck = new Deck();
+        $deck->shuffle();
+        
+        $playersHand = $deck->dealPlayerCards();
+        $this->results[] = $this->baseMessage() . 'Starting game with ' . implode(', ', $this->setPlayers());
+        $this->displayPlayerHands($playersHand);
 
-    $players = array_keys($playersHand);
-    $restDeck = $deck->getRemainingCards();
-    $topCard = array_shift($restDeck);
-    $this->results[] = '[' . date('H:i:s') . '] - ' . 'Top card is: ' . $topCard;
-    
-    $skipCounter = 0;
+        $players = array_keys($playersHand);
+        $restDeck = $deck->getRemainingCards();
+        $topCard = array_shift($restDeck);
+        $this->results[] = $this->baseMessage() . 'Top card is: ' . $topCard;
+        
+        $skipCounter = 0;
 
-    while (true) {
-        $gameOver = true; // Flag to track if the game is over when no player can play
+        while (true) {
+            $gameOver = true; // Flag to track if the game is over when no player can play
 
-        foreach ($players as $player) {
-            $canMatch = false;
-            $matchingCards = [];
+            foreach ($players as $player) {
+                $canMatch = false;
+                $matchingCards = [];
 
-            foreach ($playersHand[$player] as $key => $card) {
-                if ($this->canMatchCard($card, $topCard)) {
-                    $canMatch = true;
-                    array_push($matchingCards, $key);
+                foreach ($playersHand[$player] as $key => $card) {
+                    if ($this->canMatchCard($card, $topCard)) {
+                        $canMatch = true;
+                        array_push($matchingCards, $key);
+                    }
                 }
-            }
 
-            if ($canMatch) {
-                $gameOver = false; // At least one player can still play
-                $skipCounter = 0; // Reset the skip counter
-                $randomKey = array_rand($matchingCards);
-                $key = $matchingCards[$randomKey];
-                $matchedCard = $playersHand[$player][$key];
-                unset($playersHand[$player][$key]);
-                $topCard = $matchedCard;
-                $this->results[] = '[' . date('H:i:s') . ']' . ' - ' . $player . ' plays: ' . $matchedCard;
+                if ($canMatch) {
+                    $gameOver = false; // At least one player can still play
+                    $skipCounter = 0; // Reset the skip counter
+                    $randomKey = array_rand($matchingCards);
+                    $key = $matchingCards[$randomKey];
+                    $matchedCard = $playersHand[$player][$key];
+                    unset($playersHand[$player][$key]);
+                    $topCard = $matchedCard;
+                    $this->results[] = $this->baseMessage() . 'hand: ' . count($playersHand[$player]) . ' - ' . 'deck: ' . count($restDeck) . ' - ' . $player . ' plays: ' . $matchedCard;
+                        
+                    if (empty($playersHand[$player])) {
+                        $this->results[] = $this->baseMessage() . 'hand: ' . count($playersHand[$player]) . ' - ' . 'deck: ' . count($restDeck) . ' - ' . $player . ' won the game!';
+                        return;
+                    }
+                } else {
+                    if (count($restDeck) === 0) {
+                        $this->results[] = $this->baseMessage() . 'hand: ' . count($playersHand[$player]) . ' - ' . 'deck: ' . count($restDeck) . ' - ' . 'skip: ' . $skipCounter . ' - '. $player . ' cannot draw, skips turn';
+                        $skipCounter++;
+                        continue;
+                    }
                     
-                if (empty($playersHand[$player])) {
-                    $this->results[] = '[' . date('H:i:s') . '] - ' . $player . ' won the game!';
-                    return;
-                }
-            } else {
-                if (count($restDeck) === 0) {
-                    $this->results[] = '[' . date('H:i:s') . '] - ' . $player . ' cannot draw, skips turn';
-                    $skipCounter++;
-                    continue;
-                }
-                
-                $gameOver = false; // At least one player can still play
-                $skipCounter = 0; // Reset the skip counter
-                $randomIndex = array_rand($restDeck);
-                $newCard = $restDeck[$randomIndex];
-                unset($restDeck[$randomIndex]);
-                array_push($playersHand[$player], $newCard);
-                $this->results[] = '[' . date('H:i:s') . '] - ' . $player . ' draws: ' . $newCard;
-            }
-        }
+                    $gameOver = false; // At least one player can still play
+                    $skipCounter = 0; // Reset the skip counter
 
-        if ($gameOver || $skipCounter === count($players)) {
-            $this->results[] = '[' . date('H:i:s') . '] - ' . 'The game ended in a draw.';
-            return;
+                    $newCard = array_shift($restDeck);
+                    array_push($playersHand[$player], $newCard);
+                    $this->results[] = $this->baseMessage() . 'hand: ' . count($playersHand[$player]) . ' - ' . 'deck: ' . count($restDeck) . ' - ' . $player . ' draws: ' . $newCard;
+                }
+            }
+
+            if ($gameOver || $skipCounter === count($players)) {
+                $this->results[] = $this->baseMessage() . 'The game ended in a draw.';
+                return;
+                }
         }
     }
-}
 
     public function getResults()
     {
