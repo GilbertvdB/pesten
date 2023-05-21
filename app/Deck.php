@@ -27,13 +27,14 @@ class Deck
         shuffle($this->cards);
     }
 
-    public function setPlayers() {
+    public function setPlayers() 
+    {
         $players = ['Abby', 'John', 'Stan', 'Monica'];
         return $players;
     }
 
-    public function dealPlayerCards() {
-        
+    public function dealPlayerCards() 
+    {
         $players = $this->setPlayers();
         $playerHands = array_fill_keys($players, []);
 
@@ -77,7 +78,6 @@ class Deck
 
     private function topCards()
     {
-        
         $restDeck = $this->getRemainingCards();
         $topCard = array_shift($restDeck);
         $this->results[] = $this->baseMessage() . 'Top card is: ' . $topCard;
@@ -156,5 +156,3 @@ class Deck
         return $this->results;
     }
 }
-
-?>
