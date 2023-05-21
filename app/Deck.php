@@ -33,7 +33,6 @@ class Deck
     }
 
     public function dealPlayerCards() {
-        // $deck = $this->cards;
         
         $players = $this->setPlayers();
         $playerHands = array_fill_keys($players, []);
