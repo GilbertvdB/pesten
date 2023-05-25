@@ -22,7 +22,7 @@ Here are the rules:
 
 ## Files
 <a href="https://github.com/GilbertvdB/pesten/blob/master/app/Deck.php">The class file can be found here</a>
-<a href="https://github.com/GilbertvdB/pesten/blob/code-optimization/app/Deck.php">New class version here!</a>
+<br><a href="https://github.com/GilbertvdB/pesten/blob/code-optimization/app/Deck.php">New class version here!</a>
 
 <a href="https://github.com/GilbertvdB/pesten/blob/master/app/Http/Controllers/CardController.php">The controller can be found here</a>
 
